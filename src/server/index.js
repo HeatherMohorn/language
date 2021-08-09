@@ -15,7 +15,7 @@ var json = {
 
 var appKey = process.env.API_KEY;
 const baseURL = "https://api.meaningcloud.com/sentiment-2.1?key=";
-//use this in post request 
+//use this in post request
 var url = baseURL + appKey + "&of=json&txt=" + text + "&lang=en";
 
 const app = express()
@@ -47,26 +47,18 @@ app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
 
+app.get('/data', function(req, res){
+  response.sendFile('dist/index.html');
+})
 
-console.log("API key is ${process.env.API_KEY}");
-/* FROM API website
-const formdata = new FormData();
-formdata.append("key", "d4fb060693c9b04aab6612d02e6972de");
-formdata.append("txt", "YOUR TEXT HERE");
-formdata.append("lang", "TEXT LANGUAGE HERE");  // 2-letter code, like en es fr ...
+app.post('/data', async function (req, res){
+  const result = await
+  fetch('https://api.meaningcloud.com/sentiment-2.1?key=' + process.env.API_KEY + '&url=' + request.body.formText + '&lang=en')
 
-const requestOptions = {
-  method: 'POST',
-  body: formdata,
-  redirect: 'follow'
-};
-
-const response = fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
-  .then(response => ({
-    status: response.status,
-    body: response.json()
-  }))
-  .then(({ status, body }) => console.log(status, body))
-  .catch(error => console.log('error', error));
-
-  */
+  try{
+    const response = await result.json();
+    res.send(response);
+  } catch(error){
+    console.log("error", error);
+  }
+})
