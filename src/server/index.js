@@ -14,6 +14,9 @@ var json = {
 }
 
 var appKey = process.env.API_KEY;
+const baseURL = "https://api.meaningcloud.com/sentiment-2.1?key=";
+//use this in post request 
+var url = baseURL + appKey + "&of=json&txt=" + text + "&lang=en";
 
 const app = express()
 app.use(cors())
@@ -24,7 +27,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.use(express.static('dist
+app.use(express.static('dist');
 
 console.log(JSON.stringify(mockAPIResponse))
 
