@@ -1,27 +1,16 @@
 function checkForName(inputText) {
     console.log("::: Running checkForName :::", inputText);
-    let names = [
-        "Picard",
-        "Janeway",
-        "Kirk",
-        "Archer",
-        "Georgiou"
-    ]
+    //credit for url checker with REGEX
+    //https://stackoverflow.com/questions/1701898/how-to-detect-whether-a-string-is-in-url-format-using-javascript
+    const urlCheck = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 
-    if(names.includes(inputText)) {
-        alert("Welcome, Captain!")
+    if(urlCheck.test(inputText)) {
+        return true;
+    } else {
+        alert('Invalid url');
+        return false;
     }
 }
 
-function checkURL(inputText) {
-    //credit to https://www.tutorialspoint.com/How-to-validate-URL-address-in-JavaScript for this code
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-    return url.test(inputText);
-}
 
 export { checkForName }
-export { checkURL }

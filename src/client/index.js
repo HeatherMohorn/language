@@ -1,4 +1,4 @@
-import { checkURL } from './js/nameChecker'
+import { checkForName } from './js/nameChecker'
 import { handleSubmit } from './js/formHandler'
 
 import './styles/resets.scss'
@@ -8,12 +8,14 @@ import './styles/form.scss'
 import './styles/header.scss'
 
 
-console.log(checkURL);
+window.addEventListener('DOMContentLoaded', (event)=> {
+    console.log('DOM loaded');
 
-alert("I EXIST")
-console.log("Success");
+    //submit event listener added to form
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+});
 
 export {
- checkURL,
+ checkForName,
  handleSubmit
 }

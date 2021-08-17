@@ -1,11 +1,12 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const { allowedNodeEnvironmentFlags } = require('process');
 
 var path = require('path')
 const express = require('express')
-const mockAPIResponse = require('./mockAPI.js')
 var bodyParser = require('body-parser')
-var cors = require('cors')
+const cors = require('cors')
+const fetch = require('node-fetch')
 
 var json = {
     'title': 'test json response',
@@ -13,25 +14,30 @@ var json = {
     'time': 'now'
 }
 
-var appKey = process.env.API_KEY;
+const API_KEY = process.env.API_KEY;
 const baseURL = "https://api.meaningcloud.com/sentiment-2.1?key=";
 //use this in post request
-var url = baseURL + appKey + "&of=json&txt=" + text + "&lang=en";
 
 const app = express()
 app.use(cors())
-// to use json
 app.use(bodyParser.json())
-// to use url encoded values
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+const getSentiment = async(userURL) => {
+    const res = await fetch(baseURL + API_KEY + "&lang=en&url=" + userURL);
+    try {
+        const data = await res.json();
+        console.log('data: ', data);
+        return data;
+    } catch(error) {
+        console.log('error', error);
+    }
+}
+
 app.use(express.static('dist');
 
-console.log(JSON.stringify(mockAPIResponse))
-
-console.log(__dirname)
 
 app.get('/', function (req, res) {
     res.sendFile('dist/index.html')
@@ -39,26 +45,12 @@ app.get('/', function (req, res) {
 
 
 // designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
+app.listen(8080, function () {
+    console.log('Example app listening on port 8080!')
 })
 
-app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
-})
 
-app.get('/data', function(req, res){
-  response.sendFile('dist/index.html');
-})
 
-app.post('/data', async function (req, res){
-  const result = await
-  fetch('https://api.meaningcloud.com/sentiment-2.1?key=' + process.env.API_KEY + '&url=' + request.body.formText + '&lang=en')
-
-  try{
-    const response = await result.json();
-    res.send(response);
-  } catch(error){
-    console.log("error", error);
-  }
-})
+app.post('/add', async function(req, res) {
+    res.send(await getSentiment(req.body.url));
+});

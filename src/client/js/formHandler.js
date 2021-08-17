@@ -4,37 +4,32 @@ function handleSubmit(event) {
     // check what text was put into the form field
     let formText = document.getElementById('name').value
 
-    Client.checkURL(formText)
-
     console.log("::: Form Submitted :::")
 
-    //const request = '{baseURL}key=${API_KEY}&url=${formText}&lang=en'
+    if (Client.checkForName(formText)){
+      getSentiment('/add', formText).then(function(data){
+      document.getElementById('subjectivity').innerHTML = data.subjectivity;
+      });
+    }
+}
 
-
-
-
-    if(Client.checkURL(formText)){
-      fetch('http://localhost:8081/data',{
+const getSentiment = async(url, userURL) => {
+    console.log('user url: ', userURL);
+    const res = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
-        redirect: "follow",
-        mode: "cors",
-        cache: "no-cache",
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        //stringify text retrieved
-        body: JSON.stringify({formText : formText}),
-    })
-      .then(res => res.json())
-      .then(function(res) {
-        document.getElementById('results').innerHTML = res.agreement
-    })
-  }
-  else{
-    alert("not valid")
-  };
-
+        body: JSON.stringify({userURL})
+    });
+    try {
+        const resData = await res.json();
+        return resData;
+    } catch(error) {
+        console.log('error', error);
+    }
 }
+
 
 export { handleSubmit }
