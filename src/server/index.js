@@ -16,7 +16,6 @@ var json = {
 
 const API_KEY = process.env.API_KEY;
 const baseURL = "https://api.meaningcloud.com/sentiment-2.1?key=";
-//use this in post request
 
 const app = express()
 app.use(cors())
@@ -24,6 +23,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
+
 
 const getSentiment = async(userURL) => {
     const res = await fetch(baseURL + API_KEY + "&lang=en&url=" + userURL);
@@ -35,6 +35,7 @@ const getSentiment = async(userURL) => {
         console.log('error', error);
     }
 }
+
 
 app.use(express.static('dist');
 
@@ -52,5 +53,5 @@ app.listen(8080, function () {
 
 
 app.post('/add', async function(req, res) {
-    res.send(await getSentiment(req.body.url));
+    res.send(await getSentiment(req.body.userURL));
 });
