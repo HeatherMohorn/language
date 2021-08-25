@@ -13,6 +13,7 @@ function handleSubmit(event) {
     }
 }
 
+
 const getSentiment = async(url, userURL) => {
     console.log('user url: ', userURL);
     const res = await fetch(url, {
