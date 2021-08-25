@@ -9,6 +9,9 @@ function handleSubmit(event) {
     if (Client.checkForName(formText)){
       getSentiment('/add', formText).then(function(data){
       document.getElementById('subjectivity').innerHTML = data.subjectivity;
+      document.getElementById('agreement').innerHTML = data.agreement;
+      document.getElementById('confidence').innerHTML = data.confidence;
+      document.getElementById('irony').innerHTML = data.irony;
       });
     }
 }
