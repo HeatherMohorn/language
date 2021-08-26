@@ -52,6 +52,6 @@ app.listen(8080, function () {
 
 
 
-app.post('/add', async function(req, res) {
+app.post('http://localhost:8080/add', async function(req, res) {
     res.send(await getSentiment(req.body.userURL));
 });
