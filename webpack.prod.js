@@ -8,11 +8,12 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
-    mode: 'production',
     output: {
       libraryTarget: 'var',
       library: 'Client'
     },
+    mode: 'production',
+
     optimization: {
         minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})],
     },
