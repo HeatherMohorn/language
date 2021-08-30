@@ -1,31 +1,39 @@
-
-import checkForName from './nameChecker';
-
 function handleSubmit(event) {
-    event.preventDefault();
-    const formText = document.getElementById('name').value;
-    if (Client.checkForName(formText)) {
-        fetch('/usertext', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({formText})
-        })
-        .then(res => {
-          console.log(res);
-          return res.json();
-        })
-        .then(function (response) {
-              document.getElementById('subjectivity').innerHTML = "Subjectivity: " + response.subjectivity;
-              document.getElementById('agreement').innerHTML = "Agreement: " + response.agreement;
-              document.getElementById('confidence').innerHTML = "Confidence: " + response.confidence;
-              document.getElementById('irony').innerHTML = "Irony: " + response.irony;
-        })
-    } else {
-        alert ('Enter a valid URL');
-    };
+    event.preventDefault()
+
+    // check what text was put into the form field
+    let formText = document.getElementById('name').value
+
+    console.log("::: Form Submitted :::")
+
+    if (Client.checkForName(formText)){
+      getSentiment('/add', formText).then(function(data){
+      document.getElementById('subjectivity').innerHTML = data.subjectivity;
+      document.getElementById('agreement').innerHTML = data.agreement;
+      document.getElementById('confidence').innerHTML = data.confidence;
+      document.getElementById('irony').innerHTML = data.irony;
+      });
+    }
 }
+
+
+const getSentiment = async(url, userURL) => {
+    console.log('user url: ', userURL);
+    const res = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({userURL})
+    });
+    try {
+        const resData = await res.json();
+        return resData;
+    } catch(error) {
+        console.log('error', error);
+    }
+}
+
 
 export { handleSubmit }
